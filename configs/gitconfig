@@ -1,0 +1,50 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+	name = Jeff Levin
+	email = jeff@levinology.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSifg2hVNreHw8bqshGDhzONFURBSViI4fIkR+e2rl6
+[core]
+	editor = 'nvim'
+[push]
+	default = simple
+	autoSetupRemote = true
+[core]
+	excludesfile = /Users/jeff/.gitignore
+	autocrlf = input
+[alias]
+	add-commit = !git add -A && git commit
+	amend = commit --amend
+	fap = fetch --all --prune
+  logp = log --pretty=oneline
+  logo = log --oneline
+	# push up new branch
+	pushu = push -u origin HEAD
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Users/jefe/Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[pull]
+	rebase = false
+[init]
+	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+
+# signing keys
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+	allowedSignersFile = /Users/jeff/.ssh/allowed_signers
+[commit]
+  gpgsign = true
