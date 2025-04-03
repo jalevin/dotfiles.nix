@@ -7,7 +7,7 @@ bootstrap:
 	curl -L https://nixos.org/nix/install | sh
 	# Start the daemon
 	sudo launchctl kickstart -k system/org.nixos.nix-daemon
-	cd ~/.config/nixpkgs && nix run . && home-manager switch  -b backup
+	cd ~/.config/nixpkgs && nix run . -- switch --flake .
 	#echo "nix installed. open a new shell in this dir and run \"make finish-setup\""
 
 #finish-setup:

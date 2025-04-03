@@ -29,9 +29,9 @@
     in {
       # Updated to use the new structure instead of defaultPackage
       packages = {
-        x86_64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
-        aarch64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
-        aarch64-linux.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
+        #x86_64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
+        aarch64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro.local".activationPackage;
+        #aarch64-linux.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
       };
       
       # Define the apps to provide the home-manager command
