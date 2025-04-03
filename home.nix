@@ -7,8 +7,5 @@
 
   home.file.".vimrc".source = ./vim_configuration;
 
-
-
-
   #imports = [ ./packages.nix ./vim.nix ./git.nix ./rest.nix ];
 }
