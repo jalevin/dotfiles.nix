@@ -27,13 +27,6 @@
           };
         };
     in {
-      # Updated to use the new structure instead of defaultPackage
-      packages = {
-        #x86_64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
-        aarch64-darwin.default = self.homeConfigurations."Jeffreys-MacBook-Pro.local".activationPackage;
-        #aarch64-linux.default = self.homeConfigurations."Jeffreys-MacBook-Pro".activationPackage;
-      };
-      
       # Define the apps to provide the home-manager command
       apps = {
         x86_64-darwin.default = {
@@ -50,8 +43,22 @@
         };
       };
       
+      # Define a convenience app for switching
+      apps.aarch64-darwin.switch = {
+        type = "app";
+        program = nixpkgs.legacyPackages.aarch64-darwin.writeShellScript "switch" ''
+          ${home-manager.packages.aarch64-darwin.home-manager}/bin/home-manager switch --flake "$@"
+        '';
+      };
+      
+      # Home configurations using username as the main identifier
       homeConfigurations = {
-        "Jeffreys-MacBook-Pro" = withArch "aarch64-darwin";
+        # Default configuration by username
+        "jeff" = withArch "aarch64-darwin";
+        
+        # You can add machine-specific configurations if needed
+        # "jeff@work-laptop" = withArch "aarch64-darwin";
+        # "jeff@personal-desktop" = withArch "aarch64-linux";
       };
     };
 }
