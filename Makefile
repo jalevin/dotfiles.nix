@@ -1,17 +1,23 @@
 
-bootstrap:
+bootstrap-setup:
+	# setup dirs & configs
 	mkdir -p ~/.config/nix
 	echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-	sudo launchctl kickstart -k system/org.nixos.nix-daemon
 	cd ~/.config && git clone https://github.com/jalevin/dotfiles.nix.git nixpkgs && cd nixpkgs
 	# Install nix
 	curl -L https://nixos.org/nix/install | sh
-	# Install nix-darwin using the Nix package manager
-	nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-	./result/bin/darwin-installer
-	# Now we can rebuild and switch
-	~/.nix-profile/bin/darwin-rebuild switch --flake ~/.config/nixpkgs
-	~/.nix-profile/bin/home-manager switch -b backup
+	# Start the daemon
+	sudo launchctl kickstart -k system/org.nixos.nix-daemon
+	echo "nix installed. open a new shell in this dir and run `make finish-setup`"
+
+finish-setup:
+	cd ~/.config/nixpkgs && nix build .
+#  # Install nix-darwin using the Nix package manager
+#  nix-channel --add https://github.com/LnL7/nix-darwin/archive/master.tar.gz darwin
+#  nix-channel --update
+#  # Rebuild and switch
+#  ~/.nix-profile/bin/darwin-rebuild switch --flake ~/.config/nixpkgs
+#  ~/.nix-profile/bin/home-manager switch -b backup
 
 update:
 	cd ~/.config/nixpkgs && \

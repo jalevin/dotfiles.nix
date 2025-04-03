@@ -42,6 +42,10 @@ if [[ "$confirm" =~ ^[yY]$ ]]; then
     # 7. Remove nix volume
     echo "Removing nix volume"
     sudo diskutil apfs deleteVolume /nix
+    
+    # 8. Removing bootstrap config
+    rm -rf ~/.config/nixpkgs
+    rm -rf ~/.config/nix
 
     echo "Nix has been removed from your system. You may need to restart your terminal or reboot to complete the process."
 else
