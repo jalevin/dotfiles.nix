@@ -7,10 +7,11 @@ bootstrap:
 	curl -L https://nixos.org/nix/install | sh
 	# Start the daemon
 	sudo launchctl kickstart -k system/org.nixos.nix-daemon
-	echo "nix installed. open a new shell in this dir and run `make finish-setup`"
+	cd ~/.config/nixpkgs && nix run . && home-manager switch  -b backup
+	#echo "nix installed. open a new shell in this dir and run \"make finish-setup\""
 
-finish-setup:
-	cd ~/.config/nixpkgs && nix build .
+#finish-setup:
+	#cd ~/.config/nixpkgs && nix run .
 #  # Install nix-darwin using the Nix package manager
 #  nix-channel --add https://github.com/LnL7/nix-darwin/archive/master.tar.gz darwin
 #  nix-channel --update
