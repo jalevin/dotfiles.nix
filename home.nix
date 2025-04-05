@@ -1,11 +1,8 @@
 { config, pkgs, ... }:
 let
-  # Get the directory containing the current file
-  currentDir = builtins.dirOf __curPos.file;
-  
   # Define dotfilesRoot relative to the current Nix file
   # Adjust this path as needed based on your actual file structure
-  dotfilesRoot = "${currentDir}/configs";
+  dotfilesRoot = "${ builtins.dirOf __curPos.file}/configs";
 in
 {
   home.username = "jeff";
@@ -27,5 +24,5 @@ in
     ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/op";
   };
   
-  imports = [ ./packages.nix ./brew.nix ./git.nix ]; # ./vim.nix  ./rest.nix ];
+  imports = [ ./packages.nix ./git.nix ]; # ./vim.nix  ./rest.nix ];
 }

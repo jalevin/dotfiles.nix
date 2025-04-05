@@ -3,6 +3,8 @@ bootstrap:
 	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
 	  sh -s -- install --determinate
 	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+	nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+	./result/bin/darwin-installer
 
 nuke:
 	nix-installer uninstall /path/to/receipt.json
@@ -23,4 +25,8 @@ manual-nuke:
 
 ## rebuild
 rebuild:
-	nix run . -- switch --flake .
+	nix run . switch
+	#darwin-rebuild switch --flake .
+
+rebuild-home:
+	home-manager switch --flake .

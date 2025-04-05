@@ -1,23 +1,21 @@
 {
-  description = "Home Manager configuration";
-
+  description = "Home Manager and Darwin configuration";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-
-    # Optional: Declarative tap management
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-darwin.follows = "nix-darwin";
+    };
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -26,49 +24,77 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-
-    # not sure what this does
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
-
-  outputs = { self, nixpkgs, nixpkgs-stable, nix-darwin, home-manager, nix-index-database, ... }:
-    let
-      withArch = arch:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${arch};
-          modules = [ ./home.nix nix-index-database.hmModules.nix-index ];
-          extraSpecialArgs = {
-            pkgs-stable = nixpkgs-stable.legacyPackages.${arch};
-          };
-        };
-    in {
-      # Define the apps to provide the home-manager command
-      apps = {
-        aarch64-darwin.default = {
-          type = "app";
-          program = "${home-manager.packages.aarch64-darwin.home-manager}/bin/home-manager";
-        };
-        #x86_64-darwin.default = {
-        #  type = "app";
-        #  program = "${home-manager.packages.x86_64-darwin.home-manager}/bin/home-manager";
-        #};
-        #aarch64-linux.default = {
-        #  type = "app";
-        #  program = "${home-manager.packages.aarch64-linux.home-manager}/bin/home-manager";
-      };
-
-      # Home configurations using username as the main identifier
-      homeConfigurations = {
-        # Default configuration by username
-        "jeff" = withArch "aarch64-darwin";
-        
-        # You can add machine-specific configurations if needed
-        # "jeff@work-laptop" = withArch "aarch64-darwin";
-        # "jeff@personal-desktop" = withArch "aarch64-linux";
+  outputs = inputs@{ self,
+    nixpkgs, 
+    nixpkgs-stable,
+    nix-index-database,
+    home-manager,
+    nix-darwin,
+    nix-homebrew,
+    homebrew-core,
+    homebrew-cask,
+    ...
+  }:
+  let
+    username = "jeff";
+    system = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in {
+    # For use with home-manager switch --flake .
+    homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [ 
+        ./home.nix 
+        nix-index-database.hmModules.nix-index
+      ];
+      extraSpecialArgs = {
+        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       };
     };
+
+    # For use with darwin-rebuild switch --flake .
+    darwinConfigurations.${username} = nix-darwin.lib.darwinSystem {
+      inherit system;
+      specialArgs = { 
+        inherit pkgs; 
+        inherit nix-homebrew homebrew-core homebrew-cask;
+      };
+      modules = [
+        ./darwin-configuration.nix
+        # Include home-manager as a darwin module
+        home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.${username} = import ./home.nix;
+          home-manager.extraSpecialArgs = {
+            pkgs-stable = nixpkgs-stable.legacyPackages.${system};
+          };
+        }
+        # Include homebrew module from nix-homebrew
+        nix-homebrew.darwinModules.nix-homebrew {
+          nix-homebrew = {
+            enable = true;
+            user = "${username}";
+            taps = {
+              "homebrew/core" = homebrew-core;
+              "homebrew/cask" = homebrew-cask;
+            };
+            mutableTaps = false;
+            autoMigrate = true;
+          };
+        }
+      ];
+    };
+
+    # Apps to make commands easier to access
+    apps.${system}.default = {
+      type = "app";
+      program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+    };
+  };
 }
