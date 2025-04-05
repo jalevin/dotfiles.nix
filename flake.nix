@@ -54,7 +54,7 @@
           modules = [
 
             {
-              imports = [ ./system.nix ];
+              imports = [ ./nixs/osx-system.nix ];
               _module.args = { inherit user architecture; };
             }
 
@@ -63,7 +63,7 @@
               # `home-manager` config
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${user} = import ./home.nix;
+              home-manager.users.${user} = import ./nixs/home-manager.nix;
             }
 
             nix-homebrew.darwinModules.nix-homebrew

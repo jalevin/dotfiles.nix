@@ -92,4 +92,6 @@
     /bin/chmod u+x /Volumes
     /usr/bin/chflags nohidden /Volumes
   '';
+
+  security.pam.services.sudo_local.touchIdAuth = true;
 }
