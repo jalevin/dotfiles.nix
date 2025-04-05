@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 {
   # System-level configuration
-  # Set your system preferences here
   system.defaults = {
     NSGlobalDomain = {
       AppleShowAllExtensions = true;
@@ -25,45 +24,33 @@
       # Use list view in all Finder windows by default
       FXPreferredViewStyle = "Nlsv";
     };
-  };
-
-  # Screenshot settings
-  system.screencapture = {
-    # Save screenshots to Downloads/Screenshots folder
-    location = "~/Downloads/Screenshots";
-  };
-
-  # Screen saver settings
-  system.screensaver = {
-    # Require password immediately after sleep or screen saver begins
-    askForPassword = 1;
-    askForPasswordDelay = 0;
-  };
-  
-  # Other preferences 
-  system.desktopservices = {
-    # Avoid creating .DS_Store files on network or USB volumes
-    DSDontWriteNetworkStores = true;
-    DSDontWriteUSBStores = true;
-  };
-  
-  # Time Machine settings
-  system.TimeMachine = {
-    # Prevent Time Machine from prompting to use new hard drives as backup volume
-    DoNotOfferNewDisksForBackup = true;
-  };
-
-  # Messages app settings
-  system.defaults.messageshelper.MessageController = {
-    # Disable smart quotes as it's annoying for messages that contain code
-    SOInputLineSettings = {
-      automaticQuoteSubstitutionEnabled = false;
+    # Screenshot settings
+    screencapture = {
+      # Save screenshots to Downloads/Screenshots folder
+      location = "~/Downloads/Screenshots";
+    };
+    # Screen saver settings
+    screensaver = {
+      # Require password immediately after sleep or screen saver begins
+      askForPassword = true;
+      askForPasswordDelay = 0;
     };
   };
   
-  # Create Screenshots directory
+  # Create Screenshots directory and set other preferences via activation scripts
   system.activationScripts.extraUserActivation.text = ''
+    # Create Screenshots directory
     mkdir -p "$HOME/Downloads/Screenshots"
+    
+    # Avoid creating .DS_Store files on network or USB volumes
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+    
+    # Set Time Machine to not prompt for new disks
+    defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+    
+    # Disable smart quotes in Messages
+    defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
   '';
   
   # Show the /Volumes folder (requires sudo in the original script)

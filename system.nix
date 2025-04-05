@@ -47,7 +47,7 @@
     pkgs.tree
     pkgs.watch
     pkgs.wget
-  ]
+  ];
 
   ## BREW
   homebrew = {
