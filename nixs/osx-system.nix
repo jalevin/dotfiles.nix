@@ -35,15 +35,15 @@
     pkgs.coreutils
     pkgs.curl
     pkgs.gitFull
+    pkgs.htop
+    pkgs.jq
     pkgs.jsonnet
     pkgs.jsonnet-bundler
     pkgs.neovim
     pkgs.nmap
-    pkgs.htop
-    pkgs.tldr
-    pkgs.jq
     pkgs.nodejs
     pkgs.ripgrep
+    pkgs.tldr
     pkgs.tree
     pkgs.watch
     pkgs.wget

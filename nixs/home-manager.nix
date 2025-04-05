@@ -1,8 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, dotfilesRoot, ... }:
 let
-  # Define dotfilesRoot relative to the current Nix file
   # Adjust this path as needed based on your actual file structure
-  dotfilesRoot = "${ builtins.dirOf __curPos.file}/configs";
+  configsRoot = "${dotfilesRoot}/configs";
 in
 {
   home.stateVersion = "24.05";
@@ -14,15 +13,15 @@ in
 
   home.file = {
     # rc files
-    ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/zshrc";
-    ".sqliterc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/sqliterc";
-    ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/tmux.conf";
-    ".gemrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/gemrc";
+    ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/zshrc";
+    ".sqliterc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/sqliterc";
+    ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/tmux.conf";
+    ".gemrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/gemrc";
     # directories
-    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/nvim";
-    ".config/1Password".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/1Password";
-    ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/op";
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/nvim";
+    ".config/1Password".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/1Password";
+    ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/op";
   };
   
-  imports = [ ./git.nix ]; # ./vim.nix  ./rest.nix ./packages.nix];
+  imports = [ ./git.nix ]; # ./vim.nix 
 }

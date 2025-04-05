@@ -63,6 +63,9 @@
               # `home-manager` config
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = {
+                dotfilesRoot = self.outPath;
+              };
               home-manager.users.${user} = import ./nixs/home-manager.nix;
             }
 
