@@ -1,6 +1,6 @@
 # Dotfiles.nix
 modeled from:
-    https://github.com/Arkham/dotfiles.nix and https://davi.sh/blog/2024/01/nix-darwin/
+    https://github.com/Arkham/dotfiles.nix
 
 Dotfiles, powered by [Nix](https://nixos.org/nix/) and [home-manager](https://github.com/rycee/home-manager).
 
