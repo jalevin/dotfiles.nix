@@ -31,6 +31,7 @@
   #];
   environment.systemPackages = [
     pkgs.ansible
+    pkgs.awscli
     pkgs.bat
     pkgs.coreutils
     pkgs.curl
@@ -43,6 +44,7 @@
     pkgs.neovim
     pkgs.nmap
     pkgs.ripgrep
+    pkgs.terraform
     pkgs.tflint
     pkgs.tldr
     pkgs.tree
@@ -60,13 +62,17 @@
       cleanup = "zap"; # Uninstalls all formulae not listed here
     };
 
-    brews = [
-      "ruby-build"
-      "pyenv"
-      "terraform"
-      "nodenv"
 
-      # CLI tools via Homebrew
+    taps = [
+      "dagger/tap"
+    ]
+
+    brews = [
+      "dagger/tap/dagger"
+      "nodenv"
+      "pyenv"
+      "rbenv"
+      "ruby-build"
     ];
 
     casks = [
