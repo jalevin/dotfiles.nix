@@ -4,33 +4,19 @@ modeled from:
 
 ## How to use
 
-1. Install Nix:
+1. Update
    ```bash
-   $ sh <(curl -L https://nixos.org/nix/install)
+   make xcode
    ```
-1. Enable [Nix Flakes](https://www.tweag.io/blog/2020-05-25-flakes):
+1. Bootstrap nix and nix-darwin
    ```bash
-   $ mkdir -p ~/.config/nix
-
-   $ cat <<EOF >> ~/.config/nix/nix.conf
-   experimental-features = nix-command flakes
-   EOF
-
-   $ sudo launchctl kickstart -k system/org.nixos.nix-daemon
+   make bootstrap
    ```
-1. Go inside your `~/.config` directory and clone this repo:
+1. Rebuild as you make changes
    ```bash
-   $ mkdir ~/.config && cd ~/.config && \
-     git clone https://github.com/Arkham/dotfiles.nix.git nixpkgs && cd nixpkgs
+   make rebuild
    ```
-1. Run the flake and activate your env:
+1. Uninstall if necessary
    ```bash
-   $ nix run . && home-manager switch -b backup
+   make nuke
    ```
-1. Then you can update it with:
-   ```bash
-   $ nix flake update && home-manager switch
-   ```
-
-
-
