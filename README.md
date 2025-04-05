@@ -2,6 +2,8 @@
 modeled from:
     https://github.com/Arkham/dotfiles.nix
 
+Clone this repo into ~/projects/dotfiles.nix
+
 ## How to use
 
 1. Update
