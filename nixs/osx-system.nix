@@ -44,7 +44,6 @@
     pkgs.neovim
     pkgs.nmap
     pkgs.ripgrep
-    pkgs.terraform
     pkgs.tflint
     pkgs.tldr
     pkgs.tree
@@ -63,9 +62,7 @@
     };
 
 
-    taps = [
-      "dagger/tap"
-    ]
+    taps = [ "dagger/tap" ];
 
     brews = [
       "dagger/tap/dagger"
