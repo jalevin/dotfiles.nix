@@ -51,6 +51,40 @@
     
     # Disable smart quotes in Messages
     defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
+
+    # disable spotlight hotkey
+    /usr/libexec/PlistBuddy -c "Delete :AppleSymbolicHotKeys:64" ~/Library/Preferences/com.apple.symbolichotkeys.plist 2>/dev/null || true
+    /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:64:enabled bool false" ~/Library/Preferences/com.apple.symbolichotkeys.plist
+
+
+    # Add hotkey Cmd+Shift+D to toggle notifications
+
+    # First, establish the key combination parameters
+    # 100 = d
+    # 1048576 = Command key
+    # 131072 = Shift key
+    # Parameters: enabled, type, value, parameters: (key code, modifiers)
+    
+    # Remove existing shortcut if it exists
+    /usr/libexec/PlistBuddy -c "Delete :dnd:menuBarEnabled" ~/Library/Preferences/com.apple.controlcenter.plist 2>/dev/null || true
+    
+    # Enable Do Not Disturb in menu bar so the shortcut can work
+    /usr/libexec/PlistBuddy -c "Add :dnd:menuBarEnabled bool true" ~/Library/Preferences/com.apple.controlcenter.plist
+    
+    # Define a custom keyboard shortcut for Do Not Disturb
+    defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 175 "
+      <dict>
+        <key>enabled</key><true/>
+        <key>value</key><dict>
+          <key>type</key><integer>0</integer>
+          <key>parameters</key>
+          <array>
+            <integer>100</integer>
+            <integer>1179648</integer>
+          </array>
+        </dict>
+      </dict>
+  "
   '';
   
   # Show the /Volumes folder (requires sudo in the original script)
