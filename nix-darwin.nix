@@ -1,47 +1,10 @@
 { config, pkgs, nix-homebrew, ... }:
-
 {
-  # System-level configuration
-  # Set your system preferences here
-  system = {
-    defaults = {
-      NSGlobalDomain = {
-        AppleShowAllExtensions = true;
-        AppleInterfaceStyle = "Dark";
-        InitialKeyRepeat = 15;
-        KeyRepeat = 2;
-      };
-      dock = {
-        autohide = true;
-        orientation = "bottom";
-        showhidden = true;
-        tilesize = 40;
-      };
-      finder = {
-        AppleShowAllExtensions = true;
-        QuitMenuItem = true;
-        ShowPathbar = true;
-      };
-    };
-    # Enable keyboard mapping; needed for using Karabiner
-    keyboard.enableKeyMapping = true;
-  };
-
-  # Configure Homebrew
-  homebrew = {
-    enable = true;
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "zap"; // Uninstalls all formulae not listed here
-    };
-    brews = [
-      # CLI tools via Homebrew
-    ];
-    casks = [
-      # GUI apps via Homebrew
-      "whatsapp"
-    ];
-  };
+  # Import the split files
+  imports = [
+    ./osx-settings.nix
+    ./brew.nix
+  ];
 
   # Add system-wide packages 
   environment.systemPackages = with pkgs; [

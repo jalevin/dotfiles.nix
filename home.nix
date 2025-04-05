@@ -5,9 +5,9 @@ let
   dotfilesRoot = "${ builtins.dirOf __curPos.file}/configs";
 in
 {
+  home.stateVersion = "24.05";
   home.username = "jeff";
   home.homeDirectory = "/${if pkgs.stdenv.isDarwin then "Users" else "home"}/jeff";
-  home.stateVersion = "24.05";
   programs.home-manager.enable = true;
   
   #config.allowUnfree = true;
