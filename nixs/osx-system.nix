@@ -35,14 +35,15 @@
     pkgs.coreutils
     pkgs.curl
     pkgs.gitFull
+    pkgs.go
+    pkgs.go-task
+    pkgs.heroku
     pkgs.htop
     pkgs.jq
-    pkgs.jsonnet
-    pkgs.jsonnet-bundler
     pkgs.neovim
     pkgs.nmap
-    pkgs.nodejs
     pkgs.ripgrep
+    pkgs.tflint
     pkgs.tldr
     pkgs.tree
     pkgs.watch
@@ -60,12 +61,34 @@
     };
 
     brews = [
+      "ruby-build"
+      "pyenv"
+      "terraform"
+      "nodenv"
+
       # CLI tools via Homebrew
     ];
 
     casks = [
       # GUI apps via Homebrew
+      "1password"
+      "alfred"
+      "brave-browser"
+      "cyberduck"
+      "discord"
+      "docker"
+      "google-chrome"
+      "handbrake"
+      "iterm2"
+      "rectangle"
+      "signal"
+      "slack"
+      "spotify"
+      "tableplus"
+      "tuple"
+      "visual-studio-code"
       "whatsapp"
+      "xbar"
     ];
   };
 }
