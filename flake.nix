@@ -26,7 +26,10 @@
       url = "github:homebrew/homebrew-bundle";
       flake = false;
     };
-
+    dagger-tap = {
+      url = "github:dagger/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs = inputs@{ 
@@ -38,6 +41,7 @@
     homebrew-core,
     homebrew-cask,
     homebrew-bundle,
+    dagger-tap,
     ...
     }:
     let
@@ -82,6 +86,7 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
+                  "homebrew/dager/tap" = dagger-tap;
                 };
                 mutableTaps = false;
               };

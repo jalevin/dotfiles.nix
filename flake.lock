@@ -17,6 +17,22 @@
         "type": "github"
       }
     },
+    "dagger-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1743781909,
+        "narHash": "sha256-QDU7X/jKCM8OzfeIFbeTUzFjc0KKoEBOMqzh2N8ah/I=",
+        "owner": "dagger",
+        "repo": "homebrew-tap",
+        "rev": "b004fbf8f9407ccf06538407791b3c0c2eb54ec6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dagger",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -209,6 +225,7 @@
     },
     "root": {
       "inputs": {
+        "dagger-tap": "dagger-tap",
         "home-manager": "home-manager",
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",

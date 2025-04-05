@@ -1,4 +1,4 @@
-{ config, lib, pkgs, user, architecture, ... }:
+{ config, lib, pkgs, user, architecture, dagger-tap, ... }:
 {
   # use the id from determinate installer
   ids.gids.nixbld = 350;
@@ -60,9 +60,6 @@
       autoUpdate = true;
       cleanup = "zap"; # Uninstalls all formulae not listed here
     };
-
-
-    taps = [ "dagger/tap" ];
 
     brews = [
       "dagger/tap/dagger"
