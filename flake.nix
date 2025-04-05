@@ -1,21 +1,19 @@
 {
-  description = "Home Manager and Darwin configuration";
+  description = "System flake configuration file";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-24.05-darwin";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-darwin = {
-      url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nix-homebrew = {
-      url = "github:zhaofengli-wip/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nix-darwin.follows = "nix-darwin";
-    };
+
+    nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; };
+
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -24,77 +22,66 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
     };
+
   };
-  outputs = inputs@{ self,
+
+  outputs = inputs@{ 
+    self, 
+    nix-darwin, 
     nixpkgs, 
-    nixpkgs-stable,
-    nix-index-database,
-    home-manager,
-    nix-darwin,
+    home-manager, 
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
+    homebrew-bundle,
     ...
-  }:
-  let
-    username = "jeff";
-    system = "aarch64-darwin";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in {
-    # For use with home-manager switch --flake .
-    homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = [ 
-        ./home.nix 
-        nix-index-database.hmModules.nix-index
-      ];
-      extraSpecialArgs = {
-        pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-      };
-    };
+    }: {
+    let
+      user = "jeff"
+      hostname = "Jeffreys-MacBook-Pro";
+      architecture = "aarch64-darwin";
+    in
+      # Build darwin flake using:
+      # $ darwin-rebuild build --flake .#MacBook-Pro
+      darwinConfigurations."${hostname}" =
+        nix-darwin.lib.darwinSystem {
+          system = architecture;
+          modules = [
+            ./configuration.nix user architecture
 
-    # For use with darwin-rebuild switch --flake .
-    darwinConfigurations.${username} = nix-darwin.lib.darwinSystem {
-      inherit system;
-      specialArgs = { 
-        inherit pkgs; 
-        inherit nix-homebrew homebrew-core homebrew-cask;
-      };
-      modules = [
-        ./darwin-configuration.nix
-        # Include home-manager as a darwin module
-        home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./home.nix;
-          home-manager.extraSpecialArgs = {
-            pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-          };
-        }
-        # Include homebrew module from nix-homebrew
-        nix-homebrew.darwinModules.nix-homebrew {
-          nix-homebrew = {
-            enable = true;
-            user = "${username}";
-            taps = {
-              "homebrew/core" = homebrew-core;
-              "homebrew/cask" = homebrew-cask;
-            };
-            mutableTaps = false;
-            autoMigrate = true;
-          };
-        }
-      ];
-    };
+            home-manager.darwinModules.home-manager
+            {
+              # `home-manager` config
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.db = import ./home.nix;
+            }
 
-    # Apps to make commands easier to access
-    apps.${system}.default = {
-      type = "app";
-      program = "${nix-darwin.packages.${system}.darwin-rebuild}/bin/darwin-rebuild";
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                enable = true;
+                # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
+                enableRosetta = true;
+                user = "db";
+
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                };
+                mutableTaps = false;
+              };
+            }
+
+          ];
+        };
+
+      # Expose the package set, including overlays, for convenience.
+      darwinPackages = self.darwinConfigurations."${hostname}".pkgs;
     };
-  };
 }

@@ -1,13 +1,15 @@
 ## use determinate installer
-bootstrap:
-	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-	  sh -s -- install --determinate
+xcode:
+	sudo softwareupdate -i -a
+	xcode-select --install
+
+bootstrap: #xcode
+	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-	nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-	./result/bin/darwin-installer
+	nix run nix-darwin -- switch --flake ~/.config/nix-darwin
 
 nuke:
-	nix-installer uninstall /path/to/receipt.json
+	/nix/nix-installer uninstall /nix/receipt.json
 
 ## use manual installer
 manual-bootstrap:
