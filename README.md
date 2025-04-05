@@ -2,8 +2,6 @@
 modeled from:
     https://github.com/Arkham/dotfiles.nix
 
-Dotfiles, powered by [Nix](https://nixos.org/nix/) and [home-manager](https://github.com/rycee/home-manager).
-
 ## How to use
 
 1. Install Nix:

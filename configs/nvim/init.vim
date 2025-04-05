@@ -55,7 +55,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'jlanzarotta/bufexplorer'
   Plug 'preservim/nerdcommenter'
   Plug 'airblade/vim-gitgutter'
-  Plug 'kyazdani42/nvim-tree.lua'
+  Plug 'nvim-tree/nvim-tree.lua'
 
   " JUMPING
   Plug 'nvim-lua/plenary.nvim'
