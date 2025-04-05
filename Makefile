@@ -10,6 +10,7 @@ bootstrap: #xcode
 	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
 	# start the daemon
 	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+	sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
 	# do the install
 	nix run nix-darwin -- switch --flake ~/projects/dotfiles.nix
 
