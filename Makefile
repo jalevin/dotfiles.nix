@@ -1,4 +1,14 @@
+## use determinate installer
 bootstrap:
+	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+	  sh -s -- install --determinate
+	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+
+nuke:
+	nix-installer uninstall /path/to/receipt.json
+
+## use manual installer
+manual-bootstrap:
 	# setup dirs & configs
 	mkdir -p ~/.config/nix
 	echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
@@ -8,16 +18,9 @@ bootstrap:
 	# Start the daemon
 	sudo launchctl kickstart -k system/org.nixos.nix-daemon
 	cd ~/.config/nixpkgs && nix run . -- switch --flake .
-update:
-	nix run . -- switch --flake .
-nuke:
+manual-nuke:
 	@./scripts/nuke-nix.sh
 
-determinate:
-	curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
-	  sh -s -- install --determinate
-	. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-
-determinate-nuke:
-	nix-installer uninstall /path/to/receipt.json
-
+## rebuild
+rebuild:
+	nix run . -- switch --flake .
