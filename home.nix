@@ -13,6 +13,8 @@ in
   home.stateVersion = "24.05";
   programs.home-manager.enable = true;
   
+  #config.allowUnfree = true;
+
   home.file = {
     # rc files
     ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/zshrc";
@@ -25,5 +27,5 @@ in
     ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesRoot}/op";
   };
   
-  imports = [ ./git.nix ./packages.nix]; # ./vim.nix  ./rest.nix ];
+  imports = [ ./packages.nix ./brew.nix ./git.nix ]; # ./vim.nix  ./rest.nix ];
 }

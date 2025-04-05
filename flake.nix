@@ -61,14 +61,6 @@
         #  program = "${home-manager.packages.aarch64-linux.home-manager}/bin/home-manager";
       };
 
-      # Define a convenience app for switching
-      apps.aarch64-darwin.switch = {
-        type = "app";
-        program = nixpkgs.legacyPackages.aarch64-darwin.writeShellScript "switch" ''
-          ${home-manager.packages.aarch64-darwin.home-manager}/bin/home-manager switch --flake "$@"
-        '';
-      };
-      
       # Home configurations using username as the main identifier
       homeConfigurations = {
         # Default configuration by username
