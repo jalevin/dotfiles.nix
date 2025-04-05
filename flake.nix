@@ -39,35 +39,41 @@
     homebrew-cask,
     homebrew-bundle,
     ...
-    }: {
+    }:
     let
-      user = "jeff"
+      user = "jeff";
       hostname = "Jeffreys-MacBook-Pro";
       architecture = "aarch64-darwin";
     in
+    {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#MacBook-Pro
       darwinConfigurations."${hostname}" =
         nix-darwin.lib.darwinSystem {
           system = architecture;
           modules = [
-            ./configuration.nix user architecture
+
+            {
+              imports = [ ./configuration.nix ];
+              _module.args = { inherit user architecture; };
+            }
 
             home-manager.darwinModules.home-manager
             {
               # `home-manager` config
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.db = import ./home.nix;
+              home-manager.users.${user} = import ./home.nix;
             }
 
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
                 enable = true;
+                autoMigrate = true;
                 # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
                 enableRosetta = true;
-                user = "db";
+                user = user;
 
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;

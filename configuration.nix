@@ -1,6 +1,8 @@
-@inputs{ config, lib, pkgs, ... }:
-
+{ config, lib, pkgs, user, architecture, ... }:
 {
+  # use the id from determinate installer
+  ids.gids.nixbld = 350;
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
@@ -18,11 +20,9 @@
     #casks = [ "kitty" ];
   };
 
-  users.users.jeff.home = "/Users/${inputs.user}";
+  users.users.${user}.home = "/Users/${user}";
 
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
+  #nix.enable = false;
 
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
@@ -34,8 +34,6 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 3;
 
-  nix.configureBuildUsers = true;
-
   # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = inputs.architecture
+  nixpkgs.hostPlatform = architecture;
 }
