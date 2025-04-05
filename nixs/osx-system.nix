@@ -62,7 +62,7 @@
     };
 
     brews = [
-      "dagger/tap/dagger"
+      "dagger"
       "nodenv"
       "pyenv"
       "rbenv"

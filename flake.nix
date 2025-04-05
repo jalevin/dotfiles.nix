@@ -78,15 +78,13 @@
               nix-homebrew = {
                 enable = true;
                 autoMigrate = true;
-                # Apple Silicon Only: Also install Homebrew under the default Intel prefix for Rosetta 2
                 enableRosetta = true;
                 user = user;
-
                 taps = {
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "homebrew/dager/tap" = dagger-tap;
+                  "dagger/tap" = dagger-tap;
                 };
                 mutableTaps = false;
               };
