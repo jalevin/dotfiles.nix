@@ -29,7 +29,11 @@
   #  curl
   #  wget
   #];
+
+  nixpkgs.config.allowUnfree = true;
+
   environment.systemPackages = [
+    pkgs._1password-cli
     pkgs.ansible
     pkgs.awscli
     pkgs.bat

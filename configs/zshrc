@@ -7,20 +7,15 @@ setopt hist_expire_dups_first # remove duplicate from beginning of history
 setopt hist_find_no_dups      # don't show dups when searching history
 setopt hist_verify            # perform command expansion then run
 setopt inc_append_history     # append history
-
 #setopt nomatch                # not sure why I had this
 #setopt append_history        # share history between terminals immediately
-
 unsetopt autocd beep extendedglob notify
-
 bindkey -e
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
-
-
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
@@ -32,13 +27,6 @@ else
 fi
 
 export PATH="$HOME/bin:$PATH"
-
-# temporary build for nvim since brew is outdated
-#export PATH="$HOME/nvim/bin:$PATH"
-
-
-#ssh forwarding
-#/usr/bin/ssh-add -k ${HOME}/.ssh/id_rsa
 
 # text highlighting
 export PS1="%10F%m%f:%11F%1~%f \$ "
@@ -54,13 +42,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 # go
 export GOPATH="$HOME/projects/go"
 export PATH="${PATH}:$GOPATH/bin"
-# not sure if this path works on m1
-#export PKG_CONFIG_PATH="/usr/local/Cellar/libffi/3.2.1/lib/pkgconfig"
-#export CGO_CFLAGS_ALLOW='-Xpreprocessor'
-#export PATH="${PATH}:${BREW_PATH}/opt/gettext/bin"
-
-alias gor="go run"
-
 
 godoc(){
 		go doc -u "$@" | bat -l go
@@ -69,32 +50,22 @@ godoc(){
 gosrc(){
     go doc -u -src "$@" | bat -l go
 }
-# add autopoint to path for libpff build
 
 # docker
 export DOCKER_ID_USER="levinology"
 
-# cpan
-# PATH="/Users/jefe/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL5LIB="/Users/jefe/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-# PERL_LOCAL_LIB_ROOT="/Users/jefe/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-# PERL_MB_OPT="--install_base \"/Users/jefe/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=/Users/jefe/perl5"; export PERL_MM_OPT;
-
 # ansible path
-export PATH="${BREW_PATH}/opt/ansible@2.0/bin:$PATH"
+#export PATH="${BREW_PATH}/opt/ansible@2.0/bin:$PATH"
 
 # psql path
 # echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >> ~/.zshrc
-export PATH="${BREW_PATH}/opt/libpq/bin:$PATH"
+#export PATH="${BREW_PATH}/opt/libpq/bin:$PATH"
 
 # python
 #export PATH="$HOME/.pyenv/shims:/usr/local/sbin:$PATH"
 export PATH=${BREW_PATH}/bin/python3:$PATH
 eval "$(pyenv init --path)"
 eval "$(pyenv init -)"
-
-export PATH="/opt/homebrew/opt/mysql-client/bin/:$PATH"
 
 # aws
 export PATH=${BREW_PATH}/opt/awscli:$PATH
@@ -160,16 +131,6 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 alias be="bundle exec"
 alias ptest="PARALLELIZE_TESTS=true be rails test"
 alias stest="PARALLELIZE_TESTS=true be rails test:system"
-
-# kubernetes
-alias k="kubectl"
-
-# grafana kubernetes
-alias gk="$HOME/projects/g/grafana/bin/grafana kubectl"
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-
-alias editvscode="vim \"/Users/$(whoami)/Library/Application Support/Code/User/settings.json\""
-
 alias cap="be cap"
 alias rake="be rake"
 #alias rails="bundle exec rails"
@@ -180,13 +141,7 @@ alias killpuma="pgrep puma 3 | xargs kill -9"
 alias killruby="pgrep ruby 3 | xargs kill -9"
 alias flushredis="redis-cli flushall"
 
-# lame workaround until this gets fixed
-# https://github.com/Homebrew/discussions/discussions/705
-#alias fixgitk="rm ~/.config/git/gitk"
-alias fixgitk="cp ~/.config/git/gitk_restore ~/.config/git/gitk"
-#alias gitk="fixgitk && /usr/local/bin/gitk"
-#alias gitk="fixgitk && /usr/local/bin/gitk"
-
+alias editvscode="vim \"/Users/$(whoami)/Library/Application Support/Code/User/settings.json\""
 
 #make json pretty
 pj(){
@@ -217,25 +172,6 @@ setopt prompt_subst
 # Config for the prompt. PS1 synonym.
 prompt='%F{green}%2/%f${vcs_info_msg_0_} %(?.%F{#00ff00}√.%F{#ff0000}%?)%f>'
 
-# node path
-alias node18="export PATH=\"/opt/homebrew/opt/node@18/bin:$PATH\""
-alias playwright="export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\""
-
-# increase number of file descriptors
-ulimit -S -n 16384
-
-#google cloud# The next line enables shell command completion for gcloud.
-if [ -f '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-#grafana
-export GOPRIVATE=github.com/grafana/* #grafana-com-clients/go/gcom
-#alias gracli="~/projects/g/gracli/gracli"
-alias fixyarn="YARN_CHECKSUM_BEHAVIOR=ignore yarn install --immutable && yarn start"
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/jeff/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jeff/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
 
 ## AUTOCOMPLETE
 
@@ -244,13 +180,6 @@ source ${BREW_PATH}/share/zsh/site-functions/aws_zsh_completer.sh
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-
-
-# Grafana
-export PATH="/Users/jeff/projects/g/deployment_tools/scripts/gcom/:$PATH"
-
-complete -o nospace -C /Users/jeff/projects/g/rrc-stats/bin/rrc rrc
 
 # pnpm
 export PNPM_HOME="/Users/jeff/Library/pnpm"
@@ -268,3 +197,25 @@ esac
 
 # 1password 
 source /Users/jeff/.config/op/plugins.sh
+
+#grafana
+export GOPRIVATE=github.com/grafana/* #grafana-com-clients/go/gcom
+#alias gracli="~/projects/g/gracli/gracli"
+alias fixyarn="YARN_CHECKSUM_BEHAVIOR=ignore yarn install --immutable && yarn start"
+# grafana kubernetes
+alias gk="$HOME/projects/g/grafana/bin/grafana kubectl"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jeff/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jeff/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+#google cloud# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+# increase number of file descriptors
+ulimit -S -n 16384
+# node path
+alias node18="export PATH=\"/opt/homebrew/opt/node@18/bin:$PATH\""
+alias playwright="export PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\""
+# Grafana
+export PATH="/Users/jeff/projects/g/deployment_tools/scripts/gcom/:$PATH"
+# kubernetes
+alias k="kubectl"
+complete -o nospace -C /Users/jeff/projects/g/rrc-stats/bin/rrc rrc

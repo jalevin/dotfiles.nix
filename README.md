@@ -22,3 +22,7 @@ Clone this repo into ~/projects/dotfiles.nix
    ```bash
    make nuke
    ```
+
+## TODO
+
+ - [ ] rewrite zshrc using nix
