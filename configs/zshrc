@@ -54,12 +54,9 @@ gosrc(){
 # docker
 export DOCKER_ID_USER="levinology"
 
-# ansible path
-#export PATH="${BREW_PATH}/opt/ansible@2.0/bin:$PATH"
-
 # psql path
 # echo 'export PATH="/opt/homebrew/opt/libpq/bin:$PATH"' >> ~/.zshrc
-#export PATH="${BREW_PATH}/opt/libpq/bin:$PATH"
+export PATH="${BREW_PATH}/opt/libpq/bin:$PATH"
 
 # python
 #export PATH="$HOME/.pyenv/shims:/usr/local/sbin:$PATH"
@@ -108,10 +105,6 @@ alias cleandocker="docker system prune -f"
 # ruby
 alias update_rbenv="brew update && brew upgrade ruby-build"
 
-# MAYBE DELETE THIS ON NEW MAC OS. VERY OLD
-#OPENSSL_DIR=$(brew --prefix openssl@1.1)
-#export RUBY_CONFIGURE_OPTS="--with-openssl-dir=${OPENSSL_DIR}"
-#export LIBRARY_PATH=$LIBRARY_PATH:"${OPENSSL_DIR}/lib/"
 serve() {
   if [ -n "$1" ]
   then
@@ -189,11 +182,6 @@ case ":$PATH:" in
 esac
 # pnpm end
 #
-
-## ASDF - to replace nvm / rbenv / etc
-#export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-#fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
-#autoload -Uz compinit && compinit
 
 # 1password 
 source /Users/jeff/.config/op/plugins.sh

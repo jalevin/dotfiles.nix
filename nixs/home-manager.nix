@@ -13,7 +13,7 @@ in
 
   home.file = {
     # rc files
-    ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/zshrc";
+    #".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/zshrc";
     ".sqliterc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/sqliterc";
     ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/tmux.conf";
     ".gemrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/gemrc";
@@ -23,5 +23,5 @@ in
     ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/op";
   };
   
-  imports = [ ./git.nix ]; # ./vim.nix 
+  imports = [ ./git.nix ./zshrc]; # ./vim.nix 
 }

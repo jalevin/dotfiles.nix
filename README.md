@@ -24,5 +24,5 @@ Clone this repo into ~/projects/dotfiles.nix
    ```
 
 ## TODO
-
+ - [ ] configure direnv
  - [ ] rewrite zshrc using nix
