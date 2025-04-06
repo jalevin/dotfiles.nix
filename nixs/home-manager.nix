@@ -23,5 +23,5 @@ in
     ".config/op".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/op";
   };
   
-  imports = [ ./git.nix ./zshrc]; # ./vim.nix 
+  imports = [ ./zsh.nix ./git.nix ]; # ./vim.nix 
 }

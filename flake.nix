@@ -59,7 +59,7 @@
 
             {
               imports = [ ./nixs/osx-system.nix ];
-              _module.args = { inherit user architecture; };
+              _module.args = { inherit user architecture homebrew-core homebrew-cask homebrew-bundle dagger-tap; };
             }
 
             home-manager.darwinModules.home-manager
@@ -73,8 +73,7 @@
               home-manager.users.${user} = import ./nixs/home-manager.nix;
             }
 
-            nix-homebrew.darwinModules.nix-homebrew
-            {
+            nix-homebrew.darwinModules.nix-homebrew {
               nix-homebrew = {
                 enable = true;
                 autoMigrate = true;

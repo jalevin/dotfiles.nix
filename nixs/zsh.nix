@@ -1,11 +1,20 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, programs, ... }:
 
 {
+  programs.go.enable = true;
+  programs.go.goPath = "projects/go";
+  programs.rbenv.enable = true;
+  programs.pyenv.enable = true;
+
+  # ensure aws directory exists
+  home.file.".aws/.keep".text = "";
+
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    enableAutosuggestions = true;
-    enableSyntaxHighlighting = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    defaultKeymap = "emacs"; # or vim
     
     history = {
       path = "$HOME/.histfile";
@@ -15,53 +24,62 @@
       expireDuplicatesFirst = true;
       share = true;
     };
-    
-    shellInit = ''
-      # Setup CPU detection
-      if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
-        export BREW_PATH="/opt/homebrew/"
-      else
-        export BREW_PATH="/usr/local/"
-      fi
+
+    profileExtra = ''
+      setopt histfindnodups
+      setopt histverify
+      setopt incappendhistory
+      unsetopt autocd
+      unsetopt beep
+      unsetopt extendedglob
+      unsetopt notify
     '';
-    
-    interactiveShellInit = ''
-      # ZSH options
-      setopt hist_find_no_dups
-      setopt hist_verify
-      setopt inc_append_history
-      
-      unsetopt autocd beep extendedglob notify
-      
-      # Key bindings
-      bindkey -e
-      bindkey "^[[H" beginning-of-line
-      bindkey "^[[F" end-of-line
-      
-      # Enabling and setting git info in prompt
+
+    initExtra = ''
+      # Customize prompt with VCS branch info
+      setopt promptsubst
       autoload -Uz vcs_info
       zstyle ':vcs_info:*' enable git
       zstyle ':vcs_info:git*' formats "(%F{yellow}@%b%f)"
       precmd() {
         vcs_info
       }
+      prompt='%F{green}%2/%f''${vcs_info_msg_0_} %(?.%F{#00ff00}√.%F{#ff0000}%?)%f>'
+
+      bindkey "^[[H" beginning-of-line # home key
+      bindkey "^[[F" end-of-line # end key
       
-      # Enable substitution in the prompt
-      setopt prompt_subst
-      
-      # Autocomplete
-      autoload -Uz compinit && compinit
+      # Autocomplete compatibility for zsh
       autoload -U +X bashcompinit && bashcompinit
       
-      # For terraform completion
-      if [ -x "$(command -v terraform)" ]; then
-        complete -o nospace -C $(which terraform) terraform
+      if [[ $(sysctl -n machdep.cpu.brand_string) =~ "Apple" ]]; then
+        export BREW_PATH="/opt/homebrew/"
+      else
+        export BREW_PATH="/usr/local/"
       fi
+
+      # Load AWS CLI completion
+      if [ -x "$(command -v aws)" ]; then
+        complete -C "$(which aws_completer)" aws
+      fi
+      # AWS profile helper function
+      aws-profile() {
+        if [ -z "$1" ]; then
+          echo "Current AWS Profile: $AWS_PROFILE"
+          return
+        fi
+        export AWS_PROFILE="$1"
+        echo "AWS Profile set to: $AWS_PROFILE"
+      }
       
-      # Load AWS completions if they exist
-      if [ -f ''${BREW_PATH}/share/zsh/site-functions/aws_zsh_completer.sh ]; then
-        source ''${BREW_PATH}/share/zsh/site-functions/aws_zsh_completer.sh
-      fi
+      # List available AWS profiles
+      aws-profiles() {
+        if [ -f ~/.aws/config ]; then
+          grep '\[profile' ~/.aws/config | sed -e 's/\[profile \(.*\)\]/\1/g'
+        else
+          echo "No AWS config file found."
+        fi
+      }
       
       # iTerm2 integration if present
       if [ -e "$HOME/.iterm2_shell_integration.zsh" ]; then
@@ -77,61 +95,57 @@
       if [ -f '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then
         source '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc'
       fi
-    '';
-    
-    profileExtra = ''
-      # pyenv initialization
-      if [ -x "$(command -v pyenv)" ]; then
-        eval "$(pyenv init --path)"
-        eval "$(pyenv init -)"
-      fi
       
-      # rbenv initialization
-      if [ -x "$(command -v rbenv)" ]; then
-        eval "$(rbenv init -)"
-      fi
+      # Go doc functions
+      godoc() {
+        go doc -u "$@" | bat -l go
+      }
+      
+      gosrc() {
+        go doc -u -src "$@" | bat -l go
+      }
+      
+      # Serve current directory function
+      serve() {
+        if [ -n "$1" ]; then
+          ruby -run -ehttpd . -p$1
+        else
+          ruby -run -ehttpd . -p8080
+        fi
+      }
+      
+      # Pretty print JSON
+      pj() {
+        echo $1 | jq
+      }
+      
     '';
     
-    # Your prompt configuration
-    promptInit = ''
-      prompt='%F{green}%2/%f''${vcs_info_msg_0_} %(?.%F{#00ff00}√.%F{#ff0000}%?)%f>'
-    '';
-    
-    # Environment variables
-    envExtra = ''
+    sessionVariables = {
+      PS1 = "%10F%m%f:%11F%1~%f \\$ ";
+      CLICOLOR = 1;
+      TERM = "xterm-256color";
+      EDITOR = "nvim";
+      
       # Path additions
-      export PATH="$HOME/bin:$PATH"
-      export PATH="$HOME/.rbenv/shims:/usr/local/sbin:$PATH"
-      export PATH="''${BREW_PATH}/opt/libpq/bin:$PATH"
-      export PATH="''${BREW_PATH}/bin/python3:$PATH"
-      export PATH="''${BREW_PATH}/opt/awscli:$PATH"
-      
-      # Go configuration
-      export GOPATH="$HOME/projects/go"
-      export PATH="$PATH:$GOPATH/bin"
-      
-      # pnpm configuration
-      export PNPM_HOME="/Users/jeff/Library/pnpm"
-      if [[ ! ":$PATH:" == *":$PNPM_HOME:"* ]]; then
-        export PATH="$PNPM_HOME:$PATH"
-      fi
-      
-      # General environment variables
-      export PS1="%10F%m%f:%11F%1~%f \$ "
-      export CLICOLOR=1
-      export TERM=xterm-256color
-      export EDITOR="nvim"
+      PATH = lib.concatStringsSep ":" [
+        "$HOME/bin"
+        "/usr/local/sbin"
+        "$BREW_PATH/opt/libpq/bin"
+        "$BREW_PAth/bin/python3"
+        "$PATH"
+      ];
       
       # Homebrew configuration
-      export HOMEBREW_NO_ANALYTICS=1
-      export HOMEBREW_NO_AUTO_UPDATE=1
+      HOMEBREW_NO_ANALYTICS = 1;
+      HOMEBREW_NO_AUTO_UPDATE = 1;
       
       # Docker configuration
-      export DOCKER_ID_USER="levinology"
+      DOCKER_ID_USER = "levinology";
       
       # Ruby/Rails configuration
-      export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-    '';
+      OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
+    };
     
     # Your aliases
     shellAliases = {
@@ -166,51 +180,25 @@
       "cleandocker" = "docker system prune -f";
       
       # Ruby/Rails aliases
-      "update_rbenv" = "brew update && brew upgrade ruby-build";
-      "old_ruby" = "RUBYOPT=\"\"";
+      #"update_rbenv" = "brew update && brew upgrade ruby-build";
+      #"old_ruby" = "RUBYOPT=\"\"";
       "be" = "bundle exec";
-      "ptest" = "PARALLELIZE_TESTS=true be rails test";
-      "stest" = "PARALLELIZE_TESTS=true be rails test:system";
+      #"ptest" = "PARALLELIZE_TESTS=true be rails test";
+      #"stest" = "PARALLELIZE_TESTS=true be rails test:system";
       "cap" = "be cap";
       "rake" = "be rake";
       "rspec" = "be rspec";
       "guard" = "be guard";
       "killpuma" = "pgrep puma 3 | xargs kill -9";
       "killruby" = "pgrep ruby 3 | xargs kill -9";
-      "flushredis" = "redis-cli flushall";
+      #"flushredis" = "redis-cli flushall";
       
       # VSCode
-      "editvscode" = "vim \"/Users/$(whoami)/Library/Application Support/Code/User/settings.json\"";
+      #"editvscode" = "vim \"/Users/$(whoami)/Library/Application Support/Code/User/settings.json\"";
       
       # AWS
       "aws-ident" = "aws sts get-caller-identity";
       "aws-unset" = "unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_DEFAULT_REGION && echo 'Cleared AWS Credentials'";
     };
-    
-    # Custom functions
-    initExtra = ''
-      # Go doc functions
-      godoc() {
-        go doc -u "$@" | bat -l go
-      }
-      
-      gosrc() {
-        go doc -u -src "$@" | bat -l go
-      }
-      
-      # Serve current directory function
-      serve() {
-        if [ -n "$1" ]; then
-          ruby -run -ehttpd . -p$1
-        else
-          ruby -run -ehttpd . -p8080
-        fi
-      }
-      
-      # Pretty print JSON
-      pj() {
-        echo $1 | jq
-      }
-    '';
   };
 }
