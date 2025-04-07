@@ -3,7 +3,7 @@
 {
   programs.go.enable = true;
   programs.go.goPath = "projects/go";
-  programs.rbenv.enable = true;
+  #programs.rbenv.enable = true;
   programs.pyenv.enable = true;
 
   # ensure aws directory exists
@@ -95,6 +95,18 @@
       if [ -f '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then
         source '/Users/jeff/Downloads/google-cloud-sdk/completion.zsh.inc'
       fi
+
+      if command -v direnv &> /dev/null; then
+        eval "$(direnv hook zsh)"
+      fi
+
+      # Optional: Add a direnv status indicator to your prompt
+      # This shows an indicator when direnv is active in your prompt
+      _direnv_hook() {
+        if [[ -n $DIRENV_DIR ]]; then
+          echo -n " %F{cyan}⟨env⟩%f"
+        fi
+      }
       
       # Go doc functions
       godoc() {
@@ -145,6 +157,9 @@
       
       # Ruby/Rails configuration
       OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
+
+      # quiet direnv log format
+      export DIRENV_LOG_FORMAT=""
     };
     
     # Your aliases
@@ -199,6 +214,9 @@
       # AWS
       "aws-ident" = "aws sts get-caller-identity";
       "aws-unset" = "unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_DEFAULT_REGION && echo 'Cleared AWS Credentials'";
+
+      # direnv
+      "da" = "direnv allow"
     };
   };
 }
