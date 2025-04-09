@@ -29,60 +29,59 @@ match vimTodo "NOTE"
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
-  " THEMES
-  Plug 'ueaner/molokai'
-  Plug 'tanvirtin/monokai.nvim'
-  "Plug 'keyvchan/monokai.nvim'
+" THEMES
+Plug 'ueaner/molokai'
+Plug 'tanvirtin/monokai.nvim'
 
-  " LSP
-  Plug 'williamboman/mason.nvim'
-  Plug 'williamboman/mason-lspconfig.nvim'
-  Plug 'neovim/nvim-lspconfig'
-  " Formatting
-  Plug 'nvimtools/none-ls.nvim'
-  Plug 'jay-babu/mason-null-ls.nvim'
+" LSP
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'neovim/nvim-lspconfig'
+" Formatting
+Plug 'nvimtools/none-ls.nvim'
+Plug 'jay-babu/mason-null-ls.nvim'
 
-  " COMPLETION
-  Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/vim-vsnip'
-  "Plug 'hrsh7th/cmp-buffer'
-  "Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
-  "Plug 'zbirenbaum/copilot.lua'
-  "Plug 'zbirenbaum/copilot-cmp'
+" COMPLETION
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
+"Plug 'hrsh7th/cmp-buffer'
+"Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
+"Plug 'zbirenbaum/copilot.lua'
+"Plug 'zbirenbaum/copilot-cmp'
 
-  " NAVIGATION
-  Plug 'jlanzarotta/bufexplorer'
-  Plug 'preservim/nerdcommenter'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'nvim-tree/nvim-tree.lua'
+" NAVIGATION
+Plug 'jlanzarotta/bufexplorer'
+Plug 'preservim/nerdcommenter'
+Plug 'airblade/vim-gitgutter'
+Plug 'kyazdani42/nvim-tree.lua'
 
-  " JUMPING
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-  Plug 'nvim-telescope/telescope-fzf-native.nvim'
+" JUMPING
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim'
 
-  Plug 'tpope/vim-surround'
-  Plug 'tpope/vim-eunuch'
-  Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-endwise'
 
-  " SYNTAX
-  Plug 'mechatroner/rainbow_csv'
-  Plug 'luochen1990/rainbow'
+" SYNTAX
+Plug 'mechatroner/rainbow_csv'
+Plug 'luochen1990/rainbow'
 
-  " if you run into issues update parsers with TSUpdate
-  Plug 'nvim-treesitter/nvim-treesitter'
-  Plug 'nvim-treesitter/nvim-treesitter-context'
+" if you run into issues update parsers with TSUpdate
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter-context'
 
-  " not sure if I need language plugins now. mostly using syntax highlighting +
-  " lsp features all configured by mason
-  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-  Plug 'vim-ruby/vim-ruby'
-  Plug 'tpope/vim-rails'
+" not sure if I need language plugins now. mostly using syntax highlighting +
+" lsp features all configured by mason
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
 
-  " TESTING
-  Plug 'vim-test/vim-test'
-  Plug 'voldikss/vim-floaterm'
+" TESTING
+Plug 'vim-test/vim-test'
+Plug 'voldikss/vim-floaterm'
 
 call plug#end()
 
@@ -92,12 +91,15 @@ lua require('init')
 
 " colors
 " if issues, :PlugInstall
-colorscheme monokai
-"colorscheme molokai
+" ueaner/molokai
+colorscheme molokai
+
+" tanvirtin/monokai.nvim
+"colorscheme monokai_pro
 
 set foldmethod=expr
-  \ foldexpr=lsp#ui#vim#folding#foldexpr()
-  \ foldtext=lsp#ui#vim#folding#foldtext()
+      \ foldexpr=lsp#ui#vim#folding#foldexpr()
+      \ foldtext=lsp#ui#vim#folding#foldtext()
 
 
 " KEYBINDINGS
@@ -112,6 +114,7 @@ noremap <leader>R <cmd>lua vim.lsp.buf.rename()<CR>
 noremap <leader>ca <cmd>lua vim.lsp.buf.code_action()<CR>
 " format on save
 autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
+" format on cmd
 noremap <leader>F <cmd>lua vim.lsp.buf.format()<CR>
 noremap <leader>lr <cmd>LspRestart<CR>
 
@@ -127,8 +130,8 @@ noremap <Leader>x <cmd>lua vim.print(null_ls.builtins)<CR>
 
 
 function FoldConfig()
-	set foldmethod=expr
-	set foldexpr=nvim_treesitter#foldexpr()
+  set foldmethod=expr
+  set foldexpr=nvim_treesitter#foldexpr()
 endfunction
 autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
 
@@ -203,8 +206,8 @@ let did_install_syntax_menu = 1
 
 " show capture group word is highlighted by
 noremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+      \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+      \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
 " enable gitgutter
