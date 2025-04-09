@@ -159,7 +159,7 @@
       OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES";
 
       # quiet direnv log format
-      export DIRENV_LOG_FORMAT=""
+      DIRENV_LOG_FORMAT = "";
     };
     
     # Your aliases
@@ -216,7 +216,7 @@
       "aws-unset" = "unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_DEFAULT_REGION && echo 'Cleared AWS Credentials'";
 
       # direnv
-      "da" = "direnv allow"
+      "da" = "direnv allow";
     };
   };
 }
