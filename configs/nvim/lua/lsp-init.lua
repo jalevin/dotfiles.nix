@@ -35,12 +35,12 @@ require("mason").setup({
 masonlspconfig.setup({
   ensure_installed = {
     "bashls",
-    "cmake",
+    --"cmake",
     "dockerls",
     --"golangci_lint_ls",
     "gopls",
     "html",
-    "intelephense",
+    --"intelephense",
     "jsonls",
     "jsonnet_ls",
     "lua_ls",
@@ -90,15 +90,14 @@ require("mason-null-ls").setup({
   handlers = {},
 })
 
-
-require('lspconfig').solargraph.setup({
+require("lspconfig").solargraph.setup({
   cmd = { "bundle", "exec", "solargraph", "stdio" },
   settings = {
     solargraph = {
       diagnostics = true,
-      completion = true
-    }
-  }
+      completion = true,
+    },
+  },
 })
 
 local async_formatting = function(bufnr)

@@ -1,3 +1,5 @@
+DOTFILES_DIR=${HOME}/projects/dotfiles.nix
+
 ## use determinate installer
 xcode:
 	sudo softwareupdate -i -a
@@ -13,6 +15,12 @@ bootstrap: #xcode
 	sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
 	# do the install
 	nix run nix-darwin -- switch --flake ~/projects/dotfiles.nix
+
+post-install:
+	# Specify the preferences directory
+	defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${DOTFILES_DIR}/configs/iterm2"
+	# Tell iTerm2 to use the custom preferences in the directory
+	defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
 nuke:
 	# remove nix-darwin

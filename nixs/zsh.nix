@@ -4,7 +4,8 @@
   programs.go.enable = true;
   programs.go.goPath = "projects/go";
   #programs.rbenv.enable = true;
-  programs.pyenv.enable = true;
+  #programs.pyenv.enable = true;
+  programs.mise.enable = true;
 
   # ensure aws directory exists
   home.file.".aws/.keep".text = "";

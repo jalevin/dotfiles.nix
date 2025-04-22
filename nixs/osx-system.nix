@@ -12,7 +12,6 @@
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = architecture;
 
-
   imports = [  ./osx-settings.nix ];
 
   ## PACKAGES
@@ -31,6 +30,7 @@
     pkgs.heroku
     pkgs.htop
     pkgs.jq
+    pkgs.mise
     pkgs.neovim
     pkgs.nix-direnv
     pkgs.nmap
