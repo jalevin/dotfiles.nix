@@ -74,6 +74,7 @@
       "google-chrome"
       "handbrake"
       "iterm2"
+      "jump"
       "rectangle"
       "signal"
       "slack"
