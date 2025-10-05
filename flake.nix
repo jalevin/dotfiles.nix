@@ -12,6 +12,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    claude-code.url = "github:sadjow/claude-code-nix";
+
     nix-homebrew = { url = "github:zhaofengli-wip/nix-homebrew"; };
 
     homebrew-core = {
@@ -34,6 +36,7 @@
 
   outputs = inputs@{ 
     self, 
+    claude-code,
     nix-darwin, 
     nixpkgs, 
     home-manager, 
@@ -56,10 +59,10 @@
         nix-darwin.lib.darwinSystem {
           system = architecture;
           modules = [
-
             {
               imports = [ ./nixs/osx-system.nix ];
               _module.args = { inherit user architecture homebrew-core homebrew-cask homebrew-bundle dagger-tap; };
+              nixpkgs.overlays = [ claude-code.overlays.default ];
             }
 
             home-manager.darwinModules.home-manager
@@ -69,6 +72,7 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 dotfilesRoot = self.outPath;
+                inherit inputs;
               };
               home-manager.users.${user} = import ./nixs/home-manager.nix;
             }

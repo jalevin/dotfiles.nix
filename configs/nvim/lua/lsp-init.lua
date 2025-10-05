@@ -48,7 +48,7 @@ masonlspconfig.setup({
     "tailwindcss",
     "terraformls",
     "tflint",
-    "tsserver",
+    "ts_ls",
     "vimls",
   },
 })
@@ -79,7 +79,7 @@ require("mason-null-ls").setup({
     "luacheck",
     "markdownlint",
     "misspell",
-    "standardrb",
+    --"standardrb",
     "staticcheck",
     "tlint",
     "yamllint",

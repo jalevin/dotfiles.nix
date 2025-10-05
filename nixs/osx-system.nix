@@ -75,6 +75,7 @@
       "google-chrome"
       "handbrake"
       "iterm2"
+      "orbstack"
       #"jump" // This requires a license. Use version stored in icloud or synology
       "rectangle"
       "signal"

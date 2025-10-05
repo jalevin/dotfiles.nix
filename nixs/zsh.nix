@@ -143,6 +143,7 @@
       # Path additions
       PATH = lib.concatStringsSep ":" [
         "$HOME/bin"
+        "~/.local/bin"
         "/usr/local/sbin"
         "$BREW_PATH/opt/libpq/bin"
         "$BREW_PAth/bin/python3"
