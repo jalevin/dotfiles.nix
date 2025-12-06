@@ -11,11 +11,38 @@
   system.stateVersion = 3;
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = architecture;
+  # Primary user for system defaults and homebrew
+  system.primaryUser = user;
 
   imports = [  ./osx-settings.nix ];
 
   ## PACKAGES
   nixpkgs.config.allowUnfree = true;
+
+  # Override mise to get latest version - use pre-built binary
+  nixpkgs.overlays = [
+    (final: prev: {
+      mise = prev.stdenv.mkDerivation rec {
+        pname = "mise";
+        version = "2025.12.0";
+
+        src = prev.fetchurl {
+          url = "https://github.com/jdx/mise/releases/download/v${version}/mise-v${version}-macos-arm64";
+          sha256 = "sha256-3kPkNUU2Z4n6f5SRZsWfdhbwZNTnYgAyatTn+zP18ZU=";
+        };
+
+        dontUnpack = true;
+        dontBuild = true;
+
+        installPhase = ''
+          mkdir -p $out/bin
+          cp $src $out/bin/mise
+          chmod +x $out/bin/mise
+        '';
+      };
+    })
+  ];
+
   environment.systemPackages = [
     pkgs._1password-cli
     pkgs.ansible
@@ -30,6 +57,7 @@
     pkgs.heroku
     pkgs.htop
     pkgs.jq
+    pkgs.libwebp
     pkgs.mise
     pkgs.neovim
     pkgs.nix-direnv

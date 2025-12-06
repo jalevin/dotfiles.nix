@@ -38,17 +38,19 @@
   };
   
   # Create Screenshots directory and set other preferences via activation scripts
-  system.activationScripts.extraUserActivation.text = ''
+  system.activationScripts.userDefaults.text = ''
+    # Run user-specific defaults as the primary user
+    sudo -u ${config.system.primaryUser} bash <<'EOF'
     # Create Screenshots directory
     mkdir -p "$HOME/Downloads/Screenshots"
-    
+
     # Avoid creating .DS_Store files on network or USB volumes
     defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
     defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-    
+
     # Set Time Machine to not prompt for new disks
     defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-    
+
     # Disable smart quotes in Messages
     defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticQuoteSubstitutionEnabled" -bool false
 
@@ -64,13 +66,13 @@
     # 1048576 = Command key
     # 131072 = Shift key
     # Parameters: enabled, type, value, parameters: (key code, modifiers)
-    
+
     # Remove existing shortcut if it exists
     /usr/libexec/PlistBuddy -c "Delete :dnd:menuBarEnabled" ~/Library/Preferences/com.apple.controlcenter.plist 2>/dev/null || true
-    
+
     # Enable Do Not Disturb in menu bar so the shortcut can work
     /usr/libexec/PlistBuddy -c "Add :dnd:menuBarEnabled bool true" ~/Library/Preferences/com.apple.controlcenter.plist
-    
+
     # Define a custom keyboard shortcut for Do Not Disturb
     defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 175 "
       <dict>
@@ -85,6 +87,7 @@
         </dict>
       </dict>
   "
+EOF
   '';
   
   # Show the /Volumes folder (requires sudo in the original script)
