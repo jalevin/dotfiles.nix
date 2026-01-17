@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "beads-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1768217196,
+        "narHash": "sha256-GmOCgCz0kIXwoY7OAlsTStdmKLx3ONU2dJ+jpZDt1wU=",
+        "owner": "steveyegge",
+        "repo": "homebrew-beads",
+        "rev": "fe8b9251235cb8b4e2408ab83ff0f0d8b2f1732e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "steveyegge",
+        "repo": "homebrew-beads",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -226,6 +242,7 @@
     },
     "root": {
       "inputs": {
+        "beads-tap": "beads-tap",
         "claude-code": "claude-code",
         "dagger-tap": "dagger-tap",
         "home-manager": "home-manager",

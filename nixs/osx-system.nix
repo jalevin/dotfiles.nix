@@ -1,4 +1,4 @@
-{ config, lib, pkgs, user, architecture, homebrew-core, homebrew-cask, homebrew-bundle, dagger-tap, ... }:
+{ config, lib, pkgs, user, architecture, homebrew-core, homebrew-cask, homebrew-bundle, dagger-tap, beads-tap, ... }:
 {
   # use the id from determinate installer
   ids.gids.nixbld = 350;
@@ -85,7 +85,11 @@
       cleanup = "zap"; # Uninstalls all formulae not listed here
     };
 
+    taps = [
+    ];
+
     brews = [
+      "bd"
       "dagger"
       "nodenv"
       "pyenv"

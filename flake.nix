@@ -32,19 +32,24 @@
       url = "github:dagger/homebrew-tap";
       flake = false;
     };
+    beads-tap = {
+      url = "github:steveyegge/homebrew-beads";
+      flake = false;
+    };
   };
 
-  outputs = inputs@{ 
-    self, 
+  outputs = inputs@{
+    self,
     claude-code,
-    nix-darwin, 
-    nixpkgs, 
-    home-manager, 
+    nix-darwin,
+    nixpkgs,
+    home-manager,
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
     homebrew-bundle,
     dagger-tap,
+    beads-tap,
     ...
     }:
     let
@@ -61,7 +66,7 @@
           modules = [
             {
               imports = [ ./nixs/osx-system.nix ];
-              _module.args = { inherit user architecture homebrew-core homebrew-cask homebrew-bundle dagger-tap; };
+              _module.args = { inherit user architecture homebrew-core homebrew-cask homebrew-bundle dagger-tap beads-tap; };
               nixpkgs.overlays = [ claude-code.overlays.default ];
             }
 
@@ -88,6 +93,7 @@
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "dagger/tap" = dagger-tap;
+                  "steveyegge/homebrew-beads" = beads-tap;
                 };
                 mutableTaps = false;
               };
