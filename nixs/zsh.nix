@@ -2,7 +2,7 @@
 
 {
   programs.go.enable = true;
-  programs.go.goPath = "projects/go";
+  programs.go.env.GOPATH = "projects/go";
   #programs.rbenv.enable = true;
   #programs.pyenv.enable = true;
   programs.mise.enable = true;
@@ -36,7 +36,7 @@
       unsetopt notify
     '';
 
-    initExtra = ''
+    initContent = ''
       # Customize prompt with VCS branch info
       setopt promptsubst
       autoload -Uz vcs_info

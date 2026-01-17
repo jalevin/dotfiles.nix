@@ -39,6 +39,10 @@
           cp $src $out/bin/mise
           chmod +x $out/bin/mise
         '';
+
+        meta = {
+          mainProgram = "mise";
+        };
       };
     })
   ];
@@ -103,9 +107,9 @@
       "brave-browser"
       "cyberduck"
       "discord"
-      "docker"
+      "docker-desktop"
       "google-chrome"
-      "handbrake"
+      "handbrake-app"
       "iterm2"
       "orbstack"
       #"jump" // This requires a license. Use version stored in icloud or synology
@@ -114,7 +118,7 @@
       "slack"
       "spotify"
       "tableplus"
-      "tailscale"
+      "tailscale-app"
       "tuple"
       "visual-studio-code"
       "whatsapp"
