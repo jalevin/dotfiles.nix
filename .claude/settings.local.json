@@ -3,7 +3,8 @@
     "allow": [
       "Read(//Users/jeff/.local/bin/**)",
       "Bash(readlink:*)",
-      "Bash(/etc/profiles/per-user/jeff/bin/claude:*)"
+      "Bash(/etc/profiles/per-user/jeff/bin/claude:*)",
+      "WebFetch(domain:github.com)"
     ]
   },
   "enableAllProjectMcpServers": false

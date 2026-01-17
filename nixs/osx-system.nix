@@ -109,6 +109,7 @@
       "cyberduck"
       "discord"
       "docker-desktop"
+      "ghostty@tip"
       "google-chrome"
       "handbrake-app"
       "iterm2"
