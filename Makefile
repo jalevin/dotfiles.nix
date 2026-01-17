@@ -38,4 +38,21 @@ nuke: ## Uninstall nix-darwin and nix completely
 	/nix/nix-installer uninstall /nix/receipt.json
 
 rebuild: ## Rebuild and switch to the new configuration
-	darwin-rebuild switch --flake .
+	sudo darwin-rebuild switch --flake .
+
+update: ## Update flake inputs (usage: make update claude-code ghostty)
+	@if [ -z "$(filter-out $@,$(MAKECMDGOALS))" ]; then \
+		echo "Error: At least one package name is required"; \
+		echo "Usage: make update <package-name> [<package-name2> ...]"; \
+		exit 1; \
+	fi
+	@for pkg in $(filter-out $@,$(MAKECMDGOALS)); do \
+		echo "Updating $$pkg..."; \
+		nix flake update $$pkg; \
+	done
+
+# Treat package names as dummy targets when running update
+ifneq (,$(filter update,$(MAKECMDGOALS)))
+$(filter-out update,$(MAKECMDGOALS)):
+	@:
+endif
