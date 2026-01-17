@@ -25,7 +25,10 @@ in
     ".config/1Password/ssh/agent.toml".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/1Password/ssh/agent.toml";
     ".config/op/plugins.json".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/op/plugins.json";
     ".config/op/aws.json".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/op/aws.json";
-    ".config/ghostty/config".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/ghostty/config";
+    "Library/Application Support/com.mitchellh.ghostty/config" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/ghostty/config";
+      force = true;
+    };
   };
   
   imports = [
