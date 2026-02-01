@@ -2,7 +2,7 @@
 
 {
   programs.go.enable = true;
-  programs.go.env.GOPATH = "projects/go";
+  programs.go.env.GOPATH = "${config.home.homeDirectory}/projects/go";
   #programs.rbenv.enable = true;
   #programs.pyenv.enable = true;
   programs.mise.enable = true;

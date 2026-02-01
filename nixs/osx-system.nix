@@ -61,6 +61,7 @@
     pkgs.go-task
     pkgs.heroku
     pkgs.htop
+    pkgs.imagemagick
     pkgs.jq
     pkgs.libwebp
     pkgs.mise
