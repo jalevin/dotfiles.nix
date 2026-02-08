@@ -4,7 +4,8 @@
       "Read(//Users/jeff/.local/bin/**)",
       "Bash(readlink:*)",
       "Bash(/etc/profiles/per-user/jeff/bin/claude:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)"
     ]
   },
   "enableAllProjectMcpServers": false

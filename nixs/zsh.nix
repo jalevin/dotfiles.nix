@@ -173,6 +173,8 @@
       "gm" = "git commit";
       "gmm" = "git checkout $(git_main_branch) && git pull && git checkout - && git merge main";
       "gback" = "git checkout -";
+
+      "hv" = "tmux new-session -As hive hive";
       
       # System aliases
       "reload" = "source ~/.zshrc";

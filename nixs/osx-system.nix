@@ -45,6 +45,34 @@
           mainProgram = "mise";
         };
       };
+
+      hive = prev.stdenv.mkDerivation rec {
+        pname = "hive";
+        version = "0.26.0";
+
+        src = prev.fetchurl {
+          url = "https://github.com/hay-kot/hive/releases/download/v${version}/hive_Darwin_arm64.tar.gz";
+          sha256 = "sha256-34z17WPD56jhELslMMOibgDqLiyogjbXghNXmMFE+/o=";
+        };
+
+        nativeBuildInputs = [ prev.gnutar prev.gzip ];
+
+        unpackPhase = ''
+          tar -xzf $src
+        '';
+
+        dontBuild = true;
+
+        installPhase = ''
+          mkdir -p $out/bin
+          cp hive $out/bin/hive
+          chmod +x $out/bin/hive
+        '';
+
+        meta = {
+          mainProgram = "hive";
+        };
+      };
     })
   ];
 
@@ -60,6 +88,7 @@
     pkgs.go
     pkgs.go-task
     pkgs.heroku
+    pkgs.hive
     pkgs.htop
     pkgs.imagemagick
     pkgs.jq
@@ -69,6 +98,7 @@
     pkgs.nix-direnv
     pkgs.nmap
     pkgs.ripgrep
+    pkgs.tmux
     pkgs.tflint
     pkgs.tldr
     pkgs.tree
@@ -100,6 +130,7 @@
       "nodenv"
       "pyenv"
       "ruby-build"
+      "yt-dlp"
     ];
 
     casks = [
