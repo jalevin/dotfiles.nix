@@ -15,7 +15,8 @@ in
 
   home.file = {
     ".sqliterc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/sqliterc";
-    ".tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/tmux.conf";
+    ".config/tmux/tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/tmux.conf";
+    ".config/hive/config.yaml".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/hive/config.yaml";
     ".gemrc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/gemrc";
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/nvim";
 
