@@ -83,6 +83,8 @@ Plug 'tpope/vim-rails'
 Plug 'vim-test/vim-test'
 Plug 'voldikss/vim-floaterm'
 
+Plug 'colonyops/diff-review'
+
 call plug#end()
 
 " if issues, comment. run :PlugInstall. uncomment
