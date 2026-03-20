@@ -1,3 +1,3 @@
 # hive configuration
-repo_dirs:
+workspaces:
   - ~/projects

@@ -5,7 +5,10 @@
       "Bash(readlink:*)",
       "Bash(/etc/profiles/per-user/jeff/bin/claude:*)",
       "WebFetch(domain:github.com)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(defaults read:*)",
+      "Bash(brctl dump:*)",
+      "Bash(brew search:*)"
     ]
   },
   "enableAllProjectMcpServers": false

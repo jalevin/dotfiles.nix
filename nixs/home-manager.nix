@@ -13,6 +13,11 @@ in
 
   home.packages = with pkgs; [ claude-code ];
 
+  home.activation.opPermissions = config.lib.dag.entryAfter ["writeBoundary"] ''
+    mkdir -p "$HOME/.config/op"
+    chmod 700 "$HOME/.config/op"
+  '';
+
   home.file = {
     ".sqliterc".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/sqliterc";
     ".config/tmux/tmux.conf".source = config.lib.file.mkOutOfStoreSymlink "${configsRoot}/tmux.conf";

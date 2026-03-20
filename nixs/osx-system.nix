@@ -127,6 +127,7 @@
     brews = [
       "bd"
       "dagger"
+      "gh"
       "nodenv"
       "pyenv"
       "ruby-build"
@@ -146,6 +147,7 @@
       "handbrake-app"
       "iterm2"
       "orbstack"
+      "obsidian"
       #"jump" // This requires a license. Use version stored in icloud or synology
       "rectangle"
       "signal"
